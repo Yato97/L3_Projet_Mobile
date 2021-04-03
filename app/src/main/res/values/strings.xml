@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Projet</string>
+    <string name="defaultDescription">Description</string>
+    <string name="defaultNom">Nom</string>
+    <string name="carte">carte</string>
+</resources>
