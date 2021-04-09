@@ -13,24 +13,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Activity0 extends AppCompatActivity {
     //-----------------------Layout--------------------------//
-    private TextView score;
+    private TextView score, textinvisible;
     private ImageView perso;
     private Button button, buttong, buttond , buttona, buttonb;
-
+    private LinearLayout invisible;
     //-----------------------Layout--------------------------//
 
 
     //-------------------------Control------------------------//
-    private boolean touchControl = false;
-    private boolean startControl = false;
+    private boolean touchControl = false; //Etat de marche
+    private boolean touchControl2 = false; //Etat de saut
+    private boolean startControl = false; //Etat de debut de jeu
 
-    private Runnable runnable;
+    private Runnable runnable; //Code a executer
     private Handler handler;
     private String action;
+    private int ground = 650;
     //-------------------------Control------------------------//
 
 
@@ -51,6 +54,9 @@ public class Activity0 extends AppCompatActivity {
 
         //-------------------------Camera------------------------//
         frameLayout = findViewById(R.id.frame0);
+        textinvisible = findViewById(R.id.textinvisible);
+        invisible = findViewById(R.id.transparent);
+        invisible.setBackgroundColor(Color.argb(80,255,255,255));
         //-------------------------Camera------------------------//
 
 
@@ -66,10 +72,9 @@ public class Activity0 extends AppCompatActivity {
         perso = findViewById(R.id.player);
         //-----------------------Layout--------------------------//
 
-
-
-
         frameLayout.setOnTouchListener((View.OnTouchListener) (v, event) -> {
+            textinvisible.setVisibility(View.INVISIBLE);
+            invisible.setVisibility(View.INVISIBLE);
             if (!startControl) { //1er click
                 startControl = true;
 
@@ -133,52 +138,63 @@ public class Activity0 extends AppCompatActivity {
         buttona.setOnTouchListener((v, event) -> {
             action = "SAUTE";
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                touchControl = true;
-            }
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                touchControl = false;
+                touchControl2 = true;
+                buttona.setEnabled(false);
             }
             return false;
         });
-
-        mouve(action,touchControl);
+        mouve(action,touchControl, touchControl2); //UPDATE
+        score.setText("posY : "+posY + " ecran : " + screenHeight);
         //---------------------------Control------------------------//
 
+
         //---------------------------Limites------------------------//
-        if (posY <= 0) {
+        if (posY <= 0) { //HAUT
             posY = 0;
         }
-        if (posX <= 0) {
+        if (posX <= 0) { //GAUCHE
             posX = 0;
         }
-        if (posY >= (screenHeight - perso.getHeight())) {
+        if (posY >= (screenHeight - perso.getHeight())) { //BAS
             posY = (screenHeight - perso.getHeight());
         }
-        if (posX >= (screenWidth - perso.getWidth())) {
+        if (posX >= (screenWidth - perso.getWidth())) { //DROITE
             posX = (screenWidth - perso.getWidth());
         }
         //---------------------------Limites------------------------//
-
         perso.setY(posY); //Update
         perso.setX(posX);
     }
 
-    public void mouve(String action, boolean etat) {
-        if (action == "AVANCE") {
-            if (etat) {
-                posX += (screenWidth / 130);
-            }
+    // -----------------------DEPLACEMENTS-----------------------//
+    //-----------------------------------------------------------//
+    public void mouve(String action, boolean etat, boolean etat2) {
+        //------------------------AXE X--------------------------//
+        if (action == "AVANCE" && etat) {
+            posX += (screenWidth / 130);
         }
-        if (action == "RECULE") {
-            if (etat) {
-                posX -= (screenWidth / 130);
-            }
+        if (action == "RECULE" && etat) {
+            posX -= (screenWidth / 130);
         }
-        if (action == "SAUTE") {
-            if (etat) {
-                posY -= (screenHeight / 50);
-            }
-            else posY += (screenHeight / 50);
+        //------------------------AXE X--------------------------//
+
+        //------------------------AXE Y--------------------------//
+        if (action == "SAUTE" && etat2) {
+            touchControl2 = true; //Etat de saut
         }
+
+        if (!touchControl2) { // On descend
+            posY += (screenHeight / 40);
+            if (posY == screenHeight - perso.getHeight()) { buttona.setEnabled(true);} //Valeur a changer quand les canevas seront crée
+        }
+        if (touchControl2 && posY > screenHeight / 3) { //On monte jusqu'a la limite du saut
+            posY -= (screenHeight / 40);
+        }
+        else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
+            touchControl2 = false;
+        }
+        //------------------------AXE Y--------------------------//
     }
+    //-----------------------------------------------------------//
+    // -----------------------DEPLACEMENTS-----------------------//
 }

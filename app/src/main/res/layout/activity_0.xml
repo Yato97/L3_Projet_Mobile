@@ -14,13 +14,30 @@
         android:id="@+id/player"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="bottom"
-        android:src="@drawable/ally_chuck" />
+        android:src="@drawable/ally_chuck"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:id="@+id/transparent"
+        android:orientation="horizontal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/tomato"
+        android:text="Touche l'écran pour jouer"
+        android:id="@+id/textinvisible"
+        android:textSize="35dp"/>
+
+
     <Button
         android:id="@+id/button"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/menulist"
+        android:backgroundTint="@color/black"
         android:layout_gravity="right"/>
 
     <LinearLayout
@@ -137,6 +154,4 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
-
 </FrameLayout>

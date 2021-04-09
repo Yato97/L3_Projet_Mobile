@@ -7,13 +7,6 @@
     tools:context=".Activity0"
     android:background="@drawable/background4">
 
-    <ImageView
-        android:id="@+id/player"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ally_fox" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,14 +75,6 @@
         android:layout_gravity="bottom"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/menu"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            />
     </LinearLayout>
 
 
