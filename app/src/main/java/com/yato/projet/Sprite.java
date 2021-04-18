@@ -78,7 +78,7 @@ public class Sprite {
         //Rect src = new Rect(0,0, widthB, heightB);
         //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
 
-        //c.drawRect(dst,paint);
+        c.drawRect(src,paint);
         c.drawBitmap(bitmap,src,dst,null);
 
     }
