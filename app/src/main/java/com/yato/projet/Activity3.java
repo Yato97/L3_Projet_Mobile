@@ -66,7 +66,7 @@ public class Activity3 extends Activity implements Runnable {
     //-------------------------Camera------------------------/
 
 
-    @SuppressLint("ClickableViewAccessibility")
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +97,20 @@ public class Activity3 extends Activity implements Runnable {
         screenRatioY = 1080f / screenY;
 
         background1 = new Background(point.x, point.y, getResources());
+        //-----------------------Viewport-----------------------//
+        screenWidth = frameLayout.getWidth();
+        screenHeight = frameLayout.getHeight();
+        //-----------------------Viewport-----------------------//
+
+
+        sprite = new Sprite(this,player);
+        //-----------------------Playerpos----------------------//
+        posX = sprite.getX();
+        posY = sprite.getY();
+        //-----------------------Playerpos----------------------//
+        seDeplace();
+
+
 
         paint = new Paint();
         isPlaying = true;
@@ -106,27 +120,15 @@ public class Activity3 extends Activity implements Runnable {
 
         //-----------------------HOMELISTENER-----------------------//
         //----------------------------------------------------------//
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("score", 100);
-                setResult(0, intent);
-                finish();
-            }
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("score", 100);
+            setResult(0, intent);
+            finish();
         });
         //-----------------------------------------------------------//
         // -----------------------HOMELISTENER-----------------------//
     }
-
-    public void seDeplace() {
-            if (!spriteLoaded) {
-                sprite = new Sprite(this,player);
-                spriteLoaded = true;
-            }
-    }
-
-
 
     @Override
     public void run() {
@@ -150,8 +152,7 @@ public class Activity3 extends Activity implements Runnable {
         if (surface.getHolder().getSurface().isValid()) {
             Canvas canvas = surface.getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
-            sprite.onDraw(canvas);
-
+            sprite.onDraw(canvas, "droite");
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
     }
@@ -186,7 +187,86 @@ public class Activity3 extends Activity implements Runnable {
     protected void onResume() {
         super.onResume();
     }
+    @SuppressLint("ClickableViewAccessibility")
+
+    public void seDeplace() {
+        //---------------------------Control------------------------//
+        buttond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                score.setText("sefzefz");
+            }
+        });
+        buttond.setOnTouchListener((v, event) -> {
+            action = "AVANCE";
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                touchControl = true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                touchControl = false;
+            }
+            return false;
+        });
+        buttong.setOnTouchListener((v, event) -> {
+            action = "RECULE";
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                touchControl = true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                touchControl = false;
+            }
+            return false;
+        });
+        buttona.setOnTouchListener((v, event) -> {
+            action = "SAUTE";
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                touchControl2 = true;
+                buttona.setEnabled(false);
+            }
+            return false;
+        });
+        mouve(action,touchControl, touchControl2); //UPDATE
+        //score.setText("posY : "+posY + " ecran : " + screenHeight);
+        //---------------------------Control------------------------//
+
+
+        sprite.setY(posY); //Update
+        sprite.setX(posX);
+    }
+
+    // -----------------------DEPLACEMENTS-----------------------//
+    //-----------------------------------------------------------//
+    public void mouve(String action, boolean etat, boolean etat2) {
+        //------------------------AXE X--------------------------//
+        if (action == "AVANCE" && etat) {
+            posX += (screenWidth / 130);
+        }
+        if (action == "RECULE" && etat) {
+            posX -= (screenWidth / 130);
+        }
+        //------------------------AXE X--------------------------//
+
+        //------------------------AXE Y--------------------------//
+        if (action == "SAUTE" && etat2) {
+            touchControl2 = true; //Etat de saut
+        }
+
+        if (!touchControl2) { // On descend
+            posY += (screenHeight / 40);
+            if (posY == screenHeight - sprite.getHeight()) { buttona.setEnabled(true);} //Valeur a changer quand les canevas seront crée
+        }
+        if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
+            posY -= (screenHeight / 40);
+        }
+        else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
+            touchControl2 = false;
+        }
+        //------------------------AXE Y--------------------------//
+    }
+    //-----------------------------------------------------------//
+    // -----------------------DEPLACEMENTS-----------------------//
 }
+
 
 
 
