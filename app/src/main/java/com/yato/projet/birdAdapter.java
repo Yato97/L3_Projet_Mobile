@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yato.projet.bird.Bird;
+import com.yato.projet.Bird;
 
 import java.util.List;
 

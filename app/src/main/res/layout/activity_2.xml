@@ -4,20 +4,26 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity0"
-    android:background="@drawable/background5">
+    tools:context=".Game"
+    android:id="@+id/frame0">
 
-    <ImageView
-        android:id="@+id/player"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ally_nuck" />
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/surfaceV"
+        />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/menulist"
+        android:backgroundTint="@color/black"
+        android:layout_gravity="right"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="10dp">
 
         <LinearLayout
@@ -78,19 +84,55 @@
     <LinearLayout
         android:id="@+id/sol"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/menu"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center">
+            <Button
+                android:id="@+id/buttonG"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/arrowleft"
+                android:layout_marginTop="20dp"
+                />
+            <Button
+                android:id="@+id/buttonD"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/arrowright"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center">
+            <Button
+                android:id="@+id/buttonA"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/buttona"
+                android:layout_marginTop="19dp"
+                />
+            <Button
+                android:id="@+id/buttonB"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/buttonb"
+                />
+        </LinearLayout>
     </LinearLayout>
-
-
 </FrameLayout>

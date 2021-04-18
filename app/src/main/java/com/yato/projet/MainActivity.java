@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yato.projet.bird.Bird;
+import com.yato.projet.Bird;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(activity1, ACTIVITY1);
             }
             if (position == 2) {
-                Intent activity2 = new Intent(MainActivity.this, Activity2.class);
+                Intent activity2 = new Intent(MainActivity.this, Game.class);
                 activity2.putExtra("meilleurescore",montagne.getMeilleurescore());
-                startActivityForResult(activity2, ACTIVITY2);
+                startActivity(activity2);
             }
             if (position == 3) {
                 Intent activity3 = new Intent(MainActivity.this, Activity3.class);

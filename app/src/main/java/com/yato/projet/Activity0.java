@@ -4,24 +4,32 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.yato.projet.Sprite;
 
-public class Activity0 extends AppCompatActivity {
+public class Activity0 extends Activity {
     //-----------------------Layout--------------------------//
     private TextView score, textinvisible;
-    private ImageView perso;
+    ImageView perso;
     private Button button, buttong, buttond , buttona, buttonb;
     private LinearLayout invisible;
+    Bitmap player;
+    Sprite sprite;
     //-----------------------Layout--------------------------//
 
 
@@ -29,6 +37,7 @@ public class Activity0 extends AppCompatActivity {
     private boolean touchControl = false; //Etat de marche
     private boolean touchControl2 = false; //Etat de saut
     private boolean startControl = false; //Etat de debut de jeu
+    private boolean spriteLoaded = false;
 
     private Runnable runnable; //Code a executer
     private Handler handler;
@@ -44,13 +53,14 @@ public class Activity0 extends AppCompatActivity {
 
     int screenWidth; //Dimentions ecran
     int screenHeight;
-    //-------------------------Camera------------------------//
+    //-------------------------Camera------------------------/
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_0);
+
 
         //-------------------------Camera------------------------//
         frameLayout = findViewById(R.id.frame0);
@@ -72,21 +82,22 @@ public class Activity0 extends AppCompatActivity {
         perso = findViewById(R.id.player);
         //-----------------------Layout--------------------------//
 
-        frameLayout.setOnTouchListener((View.OnTouchListener) (v, event) -> {
+        frameLayout.setOnTouchListener((v, event) -> {
             textinvisible.setVisibility(View.INVISIBLE);
             invisible.setVisibility(View.INVISIBLE);
             if (!startControl) { //1er click
                 startControl = true;
 
                 //-----------------------Viewport-----------------------//
-                screenWidth = (int)frameLayout.getWidth();
-                screenHeight = (int)frameLayout.getHeight();
+                screenWidth = frameLayout.getWidth();
+                screenHeight = frameLayout.getHeight();
                 //-----------------------Viewport-----------------------//
 
                 //-----------------------Playerpos----------------------//
                 posX = (int) perso.getX();
                 posY = (int) perso.getY();
                 //-----------------------Playerpos----------------------//
+
 
                 handler = new Handler();
                 runnable = () -> {
@@ -187,7 +198,7 @@ public class Activity0 extends AppCompatActivity {
             posY += (screenHeight / 40);
             if (posY == screenHeight - perso.getHeight()) { buttona.setEnabled(true);} //Valeur a changer quand les canevas seront crée
         }
-        if (touchControl2 && posY > screenHeight / 3) { //On monte jusqu'a la limite du saut
+        if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
             posY -= (screenHeight / 40);
         }
         else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
@@ -198,3 +209,4 @@ public class Activity0 extends AppCompatActivity {
     //-----------------------------------------------------------//
     // -----------------------DEPLACEMENTS-----------------------//
 }
+

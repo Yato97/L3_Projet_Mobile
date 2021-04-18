@@ -1,4 +1,4 @@
-package com.yato.projet.bird;
+package com.yato.projet;
 
 public class Bird {
     //-----------------------Variables--------------------------//
