@@ -146,7 +146,7 @@ public class Activity3 extends Activity implements Runnable {
     }
 
     public void update() {
-        background1.x -= 10;
+        posX = (screenWidth/2);
         //Limites
         if (background1.x + background1.background.getWidth() <= 0) {
             background1.x = screenX;
@@ -234,7 +234,6 @@ public class Activity3 extends Activity implements Runnable {
 
             return false;
         });
-        //score.setText("posY : ");
         //---------------------------Control------------------------//
 
         //---------------------------Limites------------------------//
@@ -263,10 +262,10 @@ public class Activity3 extends Activity implements Runnable {
     public void mouve(String action, boolean etat, boolean etat2) {
         //------------------------AXE X--------------------------//
         if (action == "AVANCE" && etat) {
-            posX += (screenWidth / 100);
+            background1.x -= (screenWidth / 130);
         }
         if (action == "RECULE" && etat) {
-            posX -= (screenWidth / 130);
+            background1.x += (screenWidth / 130);
         }
         //------------------------AXE X--------------------------//
 

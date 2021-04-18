@@ -21,7 +21,7 @@ public class Sprite {
         a = activity;
         bitmap = player;
         x = 0;
-        y = 100;
+        y = 0;
 
         //-----------------------Frame--------------------------//
         width = bitmap.getWidth() / 13; // On divise le spritesheet par le nombre de colones
