@@ -20,6 +20,8 @@ public class Sprite {
     public Sprite(Activity3 activity, Bitmap player) {
         a = activity;
         bitmap = player;
+        x = 0;
+        y = 100;
 
         //-----------------------Frame--------------------------//
         width = bitmap.getWidth() / 13; // On divise le spritesheet par le nombre de colones
@@ -29,11 +31,10 @@ public class Sprite {
         //-----------------------Frame--------------------------//
 
         currentFrame = 0; // La position du sprite voulu sur une ligne
-        direcrion = 3; // La ligne voulu
+        direcrion = 11; // La ligne voulu
         xSpeed = 5;
         ySpeed = 0;
-        x = 0;
-        y = 0;
+
         paint = new Paint();
     }
 
@@ -58,22 +59,28 @@ public class Sprite {
         int frameY = direcrion * height;
         if (option == "droite") {
             direcrion = 11;
+            update();
         }
         if (option == "gauche") {
             direcrion = 9;
+            update();
         }
-        update();
+        if (option == "static") {
+            direcrion = 11;
+        }
+
         if (currentFrame > 7) {
             currentFrame = 0;
         }
         Rect src = new Rect(frameX,frameY, width+frameX, height+frameY);
-        Rect dst = new Rect(x ,y ,width+x  ,height+x);
+        Rect dst = new Rect(x ,y ,width+x  ,height+y);
         //Rect selec = new Rect(frameX,frameY,width+frameX,height+frameY);
         //Rect src = new Rect(0,0, widthB, heightB);
         //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
 
+        //c.drawRect(dst,paint);
         c.drawBitmap(bitmap,src,dst,null);
-        //c.drawRect(selec,paint);
+
     }
 
     public int getWidth() {

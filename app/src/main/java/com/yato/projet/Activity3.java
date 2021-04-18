@@ -53,6 +53,7 @@ public class Activity3 extends Activity implements Runnable {
     private boolean startControl = false; //Etat de debut de jeu
     private boolean spriteLoaded = false;
     private String action;
+    private String option;
     //-------------------------Control------------------------//
 
 
@@ -97,18 +98,14 @@ public class Activity3 extends Activity implements Runnable {
         screenRatioY = 1080f / screenY;
 
         background1 = new Background(point.x, point.y, getResources());
-        //-----------------------Viewport-----------------------//
-        screenWidth = frameLayout.getWidth();
-        screenHeight = frameLayout.getHeight();
-        //-----------------------Viewport-----------------------//
 
 
         sprite = new Sprite(this,player);
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
+        option = "static";
         //-----------------------Playerpos----------------------//
-        seDeplace();
 
 
 
@@ -116,6 +113,7 @@ public class Activity3 extends Activity implements Runnable {
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
+
 
 
         //-----------------------HOMELISTENER-----------------------//
@@ -133,10 +131,17 @@ public class Activity3 extends Activity implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
-            seDeplace();
             update();
+            seDeplace();
             draw();
             sleep();
+
+            runOnUiThread(() -> {
+                score.setText("PosX : " + posX + " PosY : " + posY);
+                if (posY == screenHeight - sprite.getHeight()) { //Exeption : on attent d'étre au sol pour pouvoir resauté
+                    buttona.setEnabled(true);
+                }
+            });
         }
     }
 
@@ -152,14 +157,14 @@ public class Activity3 extends Activity implements Runnable {
         if (surface.getHolder().getSurface().isValid()) {
             Canvas canvas = surface.getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
-            sprite.onDraw(canvas, "droite");
+            sprite.onDraw(canvas, option);
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
     }
 
     public void sleep() {
         try {
-            Thread.sleep(17);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -190,19 +195,20 @@ public class Activity3 extends Activity implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
 
     public void seDeplace() {
+        //-----------------------Viewport-----------------------//
+        screenWidth = frameLayout.getWidth();
+        screenHeight = frameLayout.getHeight();
+        //-----------------------Viewport-----------------------//
+
         //---------------------------Control------------------------//
-        buttond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                score.setText("sefzefz");
-            }
-        });
         buttond.setOnTouchListener((v, event) -> {
             action = "AVANCE";
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                option = "droite";
                 touchControl = true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                option = "static";
                 touchControl = false;
             }
             return false;
@@ -210,9 +216,11 @@ public class Activity3 extends Activity implements Runnable {
         buttong.setOnTouchListener((v, event) -> {
             action = "RECULE";
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                option = "gauche";
                 touchControl = true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                option = "static";
                 touchControl = false;
             }
             return false;
@@ -223,15 +231,31 @@ public class Activity3 extends Activity implements Runnable {
                 touchControl2 = true;
                 buttona.setEnabled(false);
             }
+
             return false;
         });
-        mouve(action,touchControl, touchControl2); //UPDATE
-        //score.setText("posY : "+posY + " ecran : " + screenHeight);
+        //score.setText("posY : ");
         //---------------------------Control------------------------//
 
+        //---------------------------Limites------------------------//
+        if (posY <= 0) { //HAUT
+            posY = 0;
+        }
+        if (posX <= 0) { //GAUCHE
+            posX = 0;
+        }
+        if (posY >= (screenHeight - sprite.getHeight())) { //BAS
+            posY = (screenHeight - sprite.getHeight());
+        }
+        if (posX >= (screenWidth - sprite.getWidth())) { //DROITE
+            posX = (screenWidth - sprite.getWidth());
+        }
+        //---------------------------Limites------------------------//
 
         sprite.setY(posY); //Update
         sprite.setX(posX);
+
+        mouve(action,touchControl, touchControl2); //UPDATE
     }
 
     // -----------------------DEPLACEMENTS-----------------------//
@@ -239,7 +263,7 @@ public class Activity3 extends Activity implements Runnable {
     public void mouve(String action, boolean etat, boolean etat2) {
         //------------------------AXE X--------------------------//
         if (action == "AVANCE" && etat) {
-            posX += (screenWidth / 130);
+            posX += (screenWidth / 100);
         }
         if (action == "RECULE" && etat) {
             posX -= (screenWidth / 130);
@@ -251,9 +275,8 @@ public class Activity3 extends Activity implements Runnable {
             touchControl2 = true; //Etat de saut
         }
 
-        if (!touchControl2) { // On descend
+        if (!touchControl2) { // On descend "gravité"
             posY += (screenHeight / 40);
-            if (posY == screenHeight - sprite.getHeight()) { buttona.setEnabled(true);} //Valeur a changer quand les canevas seront crée
         }
         if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
             posY -= (screenHeight / 40);
