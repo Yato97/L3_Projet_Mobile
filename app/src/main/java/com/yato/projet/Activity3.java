@@ -137,7 +137,7 @@ public class Activity3 extends Activity implements Runnable {
             sleep();
 
             runOnUiThread(() -> {
-                score.setText("PosX : " + posX + " PosY : " + posY);
+                score.setText("PosX : " + background1.x + " PosY : " + posY);
                 if (posY == screenHeight - sprite.getHeight()) { //Exeption : on attent d'étre au sol pour pouvoir resauté
                     buttona.setEnabled(true);
                 }
@@ -208,8 +208,8 @@ public class Activity3 extends Activity implements Runnable {
                 touchControl = true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                option = "static";
                 touchControl = false;
+                option = "static";
             }
             return false;
         });
@@ -220,8 +220,8 @@ public class Activity3 extends Activity implements Runnable {
                 touchControl = true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                option = "static";
                 touchControl = false;
+                option = "staticgauche";
             }
             return false;
         });
@@ -231,7 +231,6 @@ public class Activity3 extends Activity implements Runnable {
                 touchControl2 = true;
                 buttona.setEnabled(false);
             }
-
             return false;
         });
         //---------------------------Control------------------------//

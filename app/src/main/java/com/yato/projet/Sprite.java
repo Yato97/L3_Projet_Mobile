@@ -76,12 +76,15 @@ public class Sprite {
         if (option == "static") {
             direcrion = 11;
         }
+        if (option == "staticgauche") {
+            direcrion = 9;
+        }
 
         if (currentFrame > 7) {
             currentFrame = 0;
         }
         Rect src = new Rect(frameX,frameY, width+frameX, height+frameY);
-        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX/26  ,height+y);
+        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX / 26  ,height+y);
         //Rect selec = new Rect(frameX,frameY,width+frameX,height+frameY);
         //Rect src = new Rect(0,0, widthB, heightB);
         //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
