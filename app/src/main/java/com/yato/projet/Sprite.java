@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Sprite {
+    Sprite sprite;
     int x, y;
     int xSpeed, ySpeed;
     int width, height, widthB, heightB;
@@ -16,16 +17,23 @@ public class Sprite {
     Activity3 a;
     Paint paint;
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     //[x,y]
     public Sprite(Activity3 activity, Bitmap player) {
+        sprite = this;
         a = activity;
         bitmap = player;
         x = 0;
         y = 0;
 
         //-----------------------Frame--------------------------//
-        width = bitmap.getWidth() / 13; // On divise le spritesheet par le nombre de colones
+        width = (bitmap.getWidth() / 13); // On divise le spritesheet par le nombre de colones
         height = bitmap.getHeight() / 21; // On divise le spritesheet par le nombre de lignes
+        //width = bitmap.getWidth() / 9; // Fille
+        //height = bitmap.getHeight() / 16; // Fille
         widthB = bitmap.getWidth();
         heightB = bitmap.getHeight();
         //-----------------------Frame--------------------------//
@@ -73,12 +81,12 @@ public class Sprite {
             currentFrame = 0;
         }
         Rect src = new Rect(frameX,frameY, width+frameX, height+frameY);
-        Rect dst = new Rect(x ,y ,width+x  ,height+y);
+        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX/26  ,height+y);
         //Rect selec = new Rect(frameX,frameY,width+frameX,height+frameY);
         //Rect src = new Rect(0,0, widthB, heightB);
         //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
 
-        c.drawRect(src,paint);
+        //c.drawRect(dst,paint);
         c.drawBitmap(bitmap,src,dst,null);
 
     }
