@@ -1,4 +1,4 @@
-package com.yato.projet;
+    package com.yato.projet;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,24 +29,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.yato.projet.Sprite;
 
-public class Activity3 extends Activity implements Runnable {
+import java.util.ArrayList;
+import java.util.List;
+
+    public class Activity3 extends Activity implements Runnable {
     //-----------------------SurfaceView----------------------//
     private Thread thread;
     private boolean isPlaying;
-    private Background background1, background2;
+    Background background1;
     private int screenX, screenY;
     private Paint paint;
     private SurfaceView surface;
     //-----------------------SurfaceView----------------------//
 
     //-----------------------Layout--------------------------//
-    private TextView score, textinvisible;
+    TextView score, textinvisible;
+    int compteur = 0;
     private Button button, buttong, buttond , buttona, buttonb;
     private LinearLayout invisible;
     Bitmap player;
     Bitmap coinsheet;
     Sprite sprite;
-    Coin coin;
+    Coin coin, coin2, coin3, coin4;
+    private List<Coin> coinList = new ArrayList<>();
     //-----------------------Layout--------------------------//
 
 
@@ -56,6 +62,7 @@ public class Activity3 extends Activity implements Runnable {
     private boolean spriteLoaded = false;
     private String action;
     private String option;
+    private boolean collitonCoin = false;
     //-------------------------Control------------------------//
 
 
@@ -88,10 +95,8 @@ public class Activity3 extends Activity implements Runnable {
         buttond = findViewById(R.id.buttonD);
         buttona = findViewById(R.id.buttonA);
         buttonb = findViewById(R.id.buttonB);
-
         score = findViewById(R.id.score);
         //-----------------------Layout--------------------------//
-
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Retire la bordure haut
         Point point = new Point();
@@ -100,8 +105,12 @@ public class Activity3 extends Activity implements Runnable {
         background1 = new Background(point.x, point.y, getResources());
 
 
-        sprite = new Sprite(this,player);
-        coin = new Coin(this,coinsheet);
+        sprite = new Sprite(this, player);
+        coin2 = (new Coin(this,coinsheet,400,1200, background1, sprite));
+        coin3 = (new Coin(this,coinsheet,600,1200, background1, sprite));
+        coin4 = (new Coin(this,coinsheet,800,1200, background1, sprite));
+        coin = new Coin(this,coinsheet, 200, 1200, background1, sprite);
+        coinList.add(coin);
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
@@ -138,11 +147,15 @@ public class Activity3 extends Activity implements Runnable {
             sleep();
 
             runOnUiThread(() -> {
-                score.setText("PosX : " + background1.x + " PosY : " + posY);
+                posX = background1.x;
+                int boxPlayer = background1.x - (sprite.getWidth() * 2);
+                int inverseX = posX - posX * 2;
+                score.setText(""+compteur);
                 if (posY == screenHeight - sprite.getHeight()) { //Exeption : on attent d'étre au sol pour pouvoir resauté
                     buttona.setEnabled(true);
                 }
             });
+
         }
     }
 
@@ -155,10 +168,16 @@ public class Activity3 extends Activity implements Runnable {
 
     public void draw() {
         if (surface.getHolder().getSurface().isValid()) {
+            collitonCoin = coin.collision();
             Canvas canvas = surface.getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
+
             sprite.onDraw(canvas, option);
             coin.onDraw(canvas);
+            coin2.onDraw(canvas);
+            coin3.onDraw(canvas);
+            coin4.onDraw(canvas);
+
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
     }
@@ -273,10 +292,8 @@ public class Activity3 extends Activity implements Runnable {
         if (action == "SAUTE" && etat2) {
             touchControl2 = true; //Etat de saut
         }
-
         if (!touchControl2) { // On descend "gravité"
             posY += screenHeight / 15;
-
         }
         if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
             posY -= screenHeight / 15;

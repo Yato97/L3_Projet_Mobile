@@ -12,7 +12,9 @@ public class Sprite {
     int x, y;
     int xSpeed, ySpeed;
     int width, height, widthB, heightB;
+    int frameX, frameY;
     int currentFrame, direcrion;
+    Rect boxPlayer;
     Bitmap bitmap;
     Activity3 a;
     Paint paint;
@@ -62,9 +64,21 @@ public class Sprite {
         return y;
     }
 
+    public int getxSpeed() {
+        return xSpeed;
+    }
+
+    public int getFrameX() {
+        return frameX;
+    }
+
+    public int getFrameY() {
+        return frameY;
+    }
+
     public void onDraw(Canvas c, String option) {
-        int frameX = width * currentFrame;
-        int frameY = direcrion * height;
+        frameX = width * currentFrame;
+        frameY = direcrion * height;
         if (option == "droite") {
             direcrion = 11;
             update();
@@ -79,17 +93,17 @@ public class Sprite {
         if (option == "staticgauche") {
             direcrion = 9;
         }
-
         if (currentFrame > 7) {
             currentFrame = 0;
         }
+
         Rect src = new Rect(frameX,frameY, width+frameX, height+frameY);
         Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX / 26  ,height+y);
         //Rect selec = new Rect(frameX,frameY,width+frameX,height+frameY);
-        //Rect src = new Rect(0,0, widthB, heightB);
+        //Rect test = new Rect(0,0, width - width/ 2, height);
         //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
 
-        //c.drawRect(dst,paint);
+        //c.drawRect(test,paint);
         c.drawBitmap(bitmap,src,dst,null);
 
     }
@@ -97,6 +111,11 @@ public class Sprite {
     public int getWidth() {
         return width;
     }
+
+    public void setBoxPlayer(Rect boxPlayer) {
+        this.boxPlayer = boxPlayer;
+    }
+
 
     public int getHeight() {
         return height;
