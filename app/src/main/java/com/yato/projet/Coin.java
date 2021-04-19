@@ -21,8 +21,8 @@ public class Coin {
         sprite = this;
         a = activity;
         bitmap = coin;
-        x = 0;
-        y = 0;
+        x = 500;
+        y = 500;
 
         //-----------------------Frame--------------------------//
         width = (bitmap.getWidth() / 8); // On divise le spritesheet par le nombre de colones
@@ -62,12 +62,10 @@ public class Coin {
         update();
         //Rect src = new Rect(frameX,height, width+frameX, height);
         //Rect dst = new Rect(x ,y ,(width+x)  ,height+y);
-        Rect selec = new Rect(0,0,width+frameX,height);
-        Rect src = new Rect(0,0, widthB, heightB);
-        Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
+        Rect selec = new Rect(frameX,0,width+frameX,height);
+        Rect src = new Rect(x,y, width+x, height+y);
 
-        c.drawRect(dst,paint);
-        c.drawBitmap(bitmap,src,selec,null);
+        c.drawBitmap(bitmap,selec,src,null);
 
     }
 

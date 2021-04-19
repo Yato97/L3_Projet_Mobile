@@ -34,7 +34,6 @@ public class Activity3 extends Activity implements Runnable {
     private boolean isPlaying;
     private Background background1, background2;
     private int screenX, screenY;
-    private float screenRatioX, screenRatioY;
     private Paint paint;
     private SurfaceView surface;
     //-----------------------SurfaceView----------------------//
@@ -98,10 +97,6 @@ public class Activity3 extends Activity implements Runnable {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
-        screenRatioX = 1920f / screenX;
-        screenRatioY = 1080f / screenY;
-        Log.v("Valeur", ""+ screenRatioX);
-
         background1 = new Background(point.x, point.y, getResources());
 
 
@@ -152,7 +147,6 @@ public class Activity3 extends Activity implements Runnable {
     }
 
     public void update() {
-        posX = (screenWidth/2);
         //Limites
         if (background1.x + background1.background.getWidth() <= 0) {
             background1.x = screenX;
@@ -171,7 +165,7 @@ public class Activity3 extends Activity implements Runnable {
 
     public void sleep() {
         try {
-            Thread.sleep(13);
+            Thread.sleep(17);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
