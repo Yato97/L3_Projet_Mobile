@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -43,8 +44,9 @@ public class Activity3 extends Activity implements Runnable {
     private Button button, buttong, buttond , buttona, buttonb;
     private LinearLayout invisible;
     Bitmap player;
+    Bitmap coinsheet;
     Sprite sprite;
-    private int test;
+    Coin coin;
     //-----------------------Layout--------------------------//
 
 
@@ -77,6 +79,7 @@ public class Activity3 extends Activity implements Runnable {
         //-----------------------SurfaceView----------------------//
         surface = findViewById(R.id.surfaceV);
         player = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
+        coinsheet = BitmapFactory.decodeResource(getResources(), R.drawable.coin);
         //-----------------------SurfaceView----------------------//
 
         //-----------------------Layout--------------------------//
@@ -97,11 +100,13 @@ public class Activity3 extends Activity implements Runnable {
 
         screenRatioX = 1920f / screenX;
         screenRatioY = 1080f / screenY;
+        Log.v("Valeur", ""+ screenRatioX);
 
         background1 = new Background(point.x, point.y, getResources());
 
 
         sprite = new Sprite(this,player);
+        coin = new Coin(this,coinsheet);
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
@@ -159,13 +164,14 @@ public class Activity3 extends Activity implements Runnable {
             Canvas canvas = surface.getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
             sprite.onDraw(canvas, option);
+            coin.onDraw(canvas);
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
     }
 
     public void sleep() {
         try {
-            Thread.sleep(10);
+            Thread.sleep(13);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -275,10 +281,11 @@ public class Activity3 extends Activity implements Runnable {
         }
 
         if (!touchControl2) { // On descend "gravité"
-            posY += (screenHeight / 40);
+            posY += screenHeight / 15;
+
         }
         if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
-            posY -= (screenHeight / 40);
+            posY -= screenHeight / 15;
         }
         else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
             touchControl2 = false;
