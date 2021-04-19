@@ -44,6 +44,7 @@ public class Activity3 extends Activity implements Runnable {
     private LinearLayout invisible;
     Bitmap player;
     Sprite sprite;
+    private int test;
     //-----------------------Layout--------------------------//
 
 
