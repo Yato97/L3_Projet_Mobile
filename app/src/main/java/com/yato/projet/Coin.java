@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 public class Coin {
@@ -20,6 +21,7 @@ public class Coin {
     Paint paint;
     Background background;
     int boxPlayer;
+    MediaPlayer hit;
 
 
     //[x,y]
@@ -28,8 +30,10 @@ public class Coin {
         this.y = y;
         this.background = background;
         this.perso = perso;
-        sprite = this;
         a = activity;
+        hit = MediaPlayer.create(a, R.raw.lvl);
+        hit.setVolume(0.2f, 0.2f);
+        sprite = this;
         bitmap = coin;
         //-----------------------Frame--------------------------//
         width = (bitmap.getWidth() / 8); // On divise le spritesheet par le nombre de colones
@@ -82,6 +86,7 @@ public class Coin {
         boxPlayer = background.x - (width * 2);
         int inverseX = x - x*2;
         if (boxPlayer < inverseX && boxPlayer > inverseX-width) {
+            hit.start(); //La musique du coin
             return true;
         }
         return false;

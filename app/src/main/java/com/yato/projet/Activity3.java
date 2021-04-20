@@ -14,6 +14,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -51,8 +53,12 @@ import java.util.List;
     Bitmap coinsheet;
     Sprite sprite;
     Coin coin, coin2, coin3, coin4;
-    private List<Coin> coinList = new ArrayList<>();
     //-----------------------Layout--------------------------//
+
+    //-----------------------Musique-------------------------//
+    MediaPlayer jump;
+    MediaPlayer song;
+    //-----------------------Musique--------------------------//
 
 
     //-------------------------Control------------------------//
@@ -98,6 +104,12 @@ import java.util.List;
         score = findViewById(R.id.score);
         //-----------------------Layout--------------------------//
 
+        //-----------------------Musique--------------------------//
+        song = MediaPlayer.create(this,R.raw.theme);
+        jump = MediaPlayer.create(this,R.raw.jump);
+        jump.setVolume(0.2f, 0.2f);
+        //-----------------------Musique--------------------------//
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Retire la bordure haut
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
@@ -110,19 +122,20 @@ import java.util.List;
         coin3 = (new Coin(this,coinsheet,600,1200, background1, sprite));
         coin4 = (new Coin(this,coinsheet,800,1200, background1, sprite));
         coin = new Coin(this,coinsheet, 200, 1200, background1, sprite);
-        coinList.add(coin);
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
         option = "static";
         //-----------------------Playerpos----------------------//
 
-
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE); am.setStreamVolume(AudioManager.STREAM_MUSIC,am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
 
         paint = new Paint();
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
+        song.setLooping(true);
+        song.start(); //La musique principale du jeu
 
 
 
@@ -249,6 +262,7 @@ import java.util.List;
             action = "SAUTE";
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 touchControl2 = true;
+                jump.start(); //La musique du saut
                 buttona.setEnabled(false);
             }
             return false;
