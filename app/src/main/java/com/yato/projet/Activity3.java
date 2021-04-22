@@ -40,6 +40,7 @@ import java.util.List;
     private boolean isPlaying;
     Background background1;
     private int screenX, screenY;
+    private float scaleX, scaleY;
     private Paint paint;
     private SurfaceView surface;
     //-----------------------SurfaceView----------------------//
@@ -49,10 +50,13 @@ import java.util.List;
     int compteur = 0;
     private Button button, buttong, buttond , buttona, buttonb;
     private LinearLayout invisible;
+    Canvas canvas;
     Bitmap player;
     Bitmap coinsheet;
+    Bitmap sol;
     Sprite sprite;
     Coin coin, coin2, coin3, coin4;
+    Ground ground, ground2;
     //-----------------------Layout--------------------------//
 
     //-----------------------Musique-------------------------//
@@ -62,13 +66,12 @@ import java.util.List;
 
 
     //-------------------------Control------------------------//
-    private boolean touchControl = false; //Etat de marche
-    private boolean touchControl2 = false; //Etat de saut
-    private boolean startControl = false; //Etat de debut de jeu
-    private boolean spriteLoaded = false;
+     boolean touchControl = false; //Etat de marche
+     boolean touchControl2 = false; //Etat de saut
+     boolean sautControl = false; //Etat de debut de jeu
+     boolean lockPos = false;
     private String action;
     private String option;
-    private boolean collitonCoin = false;
     //-------------------------Control------------------------//
 
 
@@ -90,8 +93,11 @@ import java.util.List;
 
         //-----------------------SurfaceView----------------------//
         surface = findViewById(R.id.surfaceV);
-        player = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.playersheet);
         coinsheet = BitmapFactory.decodeResource(getResources(), R.drawable.coin);
+        sol = BitmapFactory.decodeResource(getResources(), R.drawable.boxtest);
+        scaleX = 1980f;
+        scaleY = 1080f;
         //-----------------------SurfaceView----------------------//
 
         //-----------------------Layout--------------------------//
@@ -115,13 +121,14 @@ import java.util.List;
         getWindowManager().getDefaultDisplay().getSize(point);
 
         background1 = new Background(point.x, point.y, getResources());
-
-
         sprite = new Sprite(this, player);
-        coin2 = (new Coin(this,coinsheet,400,1200, background1, sprite));
-        coin3 = (new Coin(this,coinsheet,600,1200, background1, sprite));
-        coin4 = (new Coin(this,coinsheet,800,1200, background1, sprite));
-        coin = new Coin(this,coinsheet, 200, 1200, background1, sprite);
+        ground2 = new Ground(this, sol, sol.getWidth() * 2, background1.getHeight() - sol.getHeight(), background1, sprite);
+        ground = new Ground(this,sol,0,background1.getHeight() - sol.getHeight(),background1, sprite);
+        coin2 = (new Coin(this,coinsheet,400,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2, background1, sprite));
+        coin3 = (new Coin(this,coinsheet,600,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2, background1, sprite));
+        coin4 = (new Coin(this,coinsheet,800,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2, background1, sprite));
+        coin = new Coin(this,coinsheet, 200, background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2, background1, sprite);
+
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
@@ -163,16 +170,24 @@ import java.util.List;
                 posX = background1.x;
                 int boxPlayer = background1.x - (sprite.getWidth() * 2);
                 int inverseX = posX - posX * 2;
-                score.setText(""+compteur);
-                if (posY == screenHeight - sprite.getHeight()) { //Exeption : on attent d'étre au sol pour pouvoir resauté
+                score.setText("pos Y : "+ (sprite.getHeight()+posY) + " ground : " + ground.getY());
+                if (posY >= screenHeight - sprite.getHeight() || sautControl) { //Exeption : on attent d'étre au sol pour pouvoir resauté
                     buttona.setEnabled(true);
+                }
+                if (!sautControl) {
+                    buttona.setEnabled(false);
+                }
+                if (lockPos) {
+                    score.setText("lol");
                 }
             });
 
         }
     }
 
-    public void update() {
+
+
+        public void update() {
         //Limites
         if (background1.x + background1.background.getWidth() <= 0) {
             background1.x = screenX;
@@ -181,7 +196,6 @@ import java.util.List;
 
     public void draw() {
         if (surface.getHolder().getSurface().isValid()) {
-            collitonCoin = coin.collision();
             Canvas canvas = surface.getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
 
@@ -190,6 +204,9 @@ import java.util.List;
             coin2.onDraw(canvas);
             coin3.onDraw(canvas);
             coin4.onDraw(canvas);
+
+            ground.onDraw(canvas);
+            ground2.onDraw(canvas);
 
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
@@ -270,6 +287,8 @@ import java.util.List;
         //---------------------------Control------------------------//
 
         //---------------------------Limites------------------------//
+
+
         if (posY <= 0) { //HAUT
             posY = 0;
         }
@@ -282,6 +301,7 @@ import java.util.List;
         if (posX >= (screenWidth - sprite.getWidth())) { //DROITE
             posX = (screenWidth - sprite.getWidth());
         }
+
         //---------------------------Limites------------------------//
 
         sprite.setY(posY); //Update
@@ -307,10 +327,11 @@ import java.util.List;
             touchControl2 = true; //Etat de saut
         }
         if (!touchControl2) { // On descend "gravité"
-            posY += screenHeight / 15;
+            posY += 10;
         }
         if (touchControl2 && posY > screenHeight / 2) { //On monte jusqu'a la limite du saut
-            posY -= screenHeight / 15;
+            posY -= 10;
+            sautControl = false;
         }
         else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
             touchControl2 = false;

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Sprite {
     Sprite sprite;
@@ -14,36 +15,30 @@ public class Sprite {
     int width, height, widthB, heightB;
     int frameX, frameY;
     int currentFrame, direcrion;
-    Rect boxPlayer;
     Bitmap bitmap;
     Activity3 a;
     Paint paint;
-
-    public Sprite getSprite() {
-        return sprite;
-    }
 
     //[x,y]
     public Sprite(Activity3 activity, Bitmap player) {
         sprite = this;
         a = activity;
-        bitmap = player;
+        bitmap = Bitmap.createScaledBitmap(player,player.getWidth(),player.getHeight(),false);
         x = 0;
         y = 0;
 
         //-----------------------Frame--------------------------//
-        width = (bitmap.getWidth() / 13); // On divise le spritesheet par le nombre de colones
-        height = bitmap.getHeight() / 21; // On divise le spritesheet par le nombre de lignes
+        width = (bitmap.getWidth() / 5); // On divise le spritesheet par le nombre de colones
+        height = (bitmap.getHeight() / 2); // On divise le spritesheet par le nombre de lignes
         //width = bitmap.getWidth() / 9; // Fille
         //height = bitmap.getHeight() / 16; // Fille
         widthB = bitmap.getWidth();
         heightB = bitmap.getHeight();
+
         //-----------------------Frame--------------------------//
 
         currentFrame = 0; // La position du sprite voulu sur une ligne
-        direcrion = 11; // La ligne voulu
-        xSpeed = 5;
-        ySpeed = 0;
+        direcrion = 0; // La ligne voulu
 
         paint = new Paint();
     }
@@ -64,58 +59,37 @@ public class Sprite {
         return y;
     }
 
-    public int getxSpeed() {
-        return xSpeed;
-    }
-
-    public int getFrameX() {
-        return frameX;
-    }
-
-    public int getFrameY() {
-        return frameY;
-    }
-
     public void onDraw(Canvas c, String option) {
-        frameX = width * currentFrame;
-        frameY = direcrion * height;
+        Log.v("Test : ", " Height : "+bitmap.getHeight()+" width : "+bitmap.getWidth());
+        frameX = width  * currentFrame;
+        frameY = height  * direcrion;
         if (option == "droite") {
-            direcrion = 11;
+            direcrion = 0;
             update();
         }
         if (option == "gauche") {
-            direcrion = 9;
+            direcrion = 1;
             update();
         }
         if (option == "static") {
-            direcrion = 11;
+            direcrion = 0;
         }
         if (option == "staticgauche") {
-            direcrion = 9;
+            direcrion = 1;
         }
-        if (currentFrame > 7) {
+        if (currentFrame >= 4) {
             currentFrame = 0;
         }
 
-        Rect src = new Rect(frameX,frameY, width+frameX, height+frameY);
-        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX / 26  ,height+y);
-        //Rect selec = new Rect(frameX,frameY,width+frameX,height+frameY);
-        //Rect test = new Rect(0,0, width - width/ 2, height);
-        //Rect dst = new Rect(0 ,0 ,widthB  ,heightB);
+        Rect src = new Rect(frameX,frameY, width+frameX, height + frameY);
+        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX/26 ,height+y);
 
-        //c.drawRect(test,paint);
         c.drawBitmap(bitmap,src,dst,null);
-
     }
 
     public int getWidth() {
         return width;
     }
-
-    public void setBoxPlayer(Rect boxPlayer) {
-        this.boxPlayer = boxPlayer;
-    }
-
 
     public int getHeight() {
         return height;

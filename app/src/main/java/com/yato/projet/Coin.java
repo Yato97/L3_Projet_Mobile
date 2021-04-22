@@ -85,9 +85,11 @@ public class Coin {
     public boolean collision() {
         boxPlayer = background.x - (width * 2);
         int inverseX = x - x*2;
-        if (boxPlayer < inverseX && boxPlayer > inverseX-width) {
-            hit.start(); //La musique du coin
-            return true;
+        if (boxPlayer <= inverseX && background.x >= inverseX-width) {
+            if (a.posY + a.sprite.getHeight() >= y && a.posY <= y+height) {
+                hit.start(); //La musique du coin
+                return true;
+            }
         }
         return false;
     }

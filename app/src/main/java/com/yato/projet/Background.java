@@ -12,15 +12,21 @@ public class Background {
     int height;
     float aspectRatio;
 
-     Background(int screenX, int screenY, Resources res) {
-         background = BitmapFactory.decodeResource(res, R.drawable.intro);
+    public int getWidth() {
+        return width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    Background(int screenX, int screenY, Resources res) {
+        background = BitmapFactory.decodeResource(res, R.drawable.intro);
 
         aspectRatio = background.getWidth() / (float)background.getHeight();
         height = screenY;
         width = Math.round(height * aspectRatio);
 
-        background = Bitmap.createScaledBitmap(background, width , screenY, false);
+        background = Bitmap.createScaledBitmap(background, width , height, false);
      }
-
 }
