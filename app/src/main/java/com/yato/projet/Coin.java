@@ -25,11 +25,9 @@ public class Coin {
 
 
     //[x,y]
-    public Coin(Activity3 activity, Bitmap coin, int x,int y, Background background, Sprite perso) {
+    public Coin(Activity3 activity, Bitmap coin, int x,int y) {
         this.x = x;
         this.y = y;
-        this.background = background;
-        this.perso = perso;
         a = activity;
         hit = MediaPlayer.create(a, R.raw.lvl);
         hit.setVolume(0.2f, 0.2f);
@@ -59,7 +57,7 @@ public class Coin {
         //Rect src = new Rect(frameX,height, width+frameX, height);
         //Rect dst = new Rect(x ,y ,(width+x)  ,height+y);
         Rect selec = new Rect(frameX,0,width+frameX,height);
-        Rect src = new Rect(x+background.x,y+background.y, width+x+background.x, height+y+background.y);
+        Rect src = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
 
         c.drawBitmap(bitmap,selec,src,null);
 
@@ -83,9 +81,9 @@ public class Coin {
     }
 
     public boolean collision() {
-        boxPlayer = background.x - (width * 2);
+        boxPlayer = a.background1.x - (width * 2);
         int inverseX = x - x*2;
-        if (boxPlayer <= inverseX && background.x >= inverseX-width) {
+        if (boxPlayer <= inverseX && a.background1.x >= inverseX-width) {
             if (a.posY + a.sprite.getHeight() >= y && a.posY <= y+height) {
                 hit.start(); //La musique du coin
                 return true;

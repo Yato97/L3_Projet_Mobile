@@ -24,18 +24,16 @@ public class Ground {
 
 
     //[x,y]
-    public Ground(Activity3 activity, Bitmap ground, int x,int y, Background background, Sprite perso) {
+    public Ground(Activity3 activity, Bitmap ground, int x,int y) {
         this.x = x;
         this.y = y;
-        this.background = background;
-        this.perso = perso;
         a = activity;
         aspectRatio = a.sol.getWidth() / (float)a.sol.getHeight();
 
         bitmap = ground;
         //-----------------------Frame--------------------------//
         height = bitmap.getHeight(); // On divise le spritesheet par le nombre de lignes
-        width = Math.round(height * aspectRatio); // On divise le spritesheet par le nombre de colones
+        width = bitmap.getWidth(); // On divise le spritesheet par le nombre de colones
         //-----------------------Frame--------------------------//
         bitmap = Bitmap.createScaledBitmap(ground,width,height,false);
         paint = new Paint();
@@ -44,7 +42,7 @@ public class Ground {
     public void onDraw(Canvas c) {
         collision();
         Rect selec = new Rect(0,0,width,height);
-        Rect src = new Rect(x+background.x,y+background.y, width+x+background.x, height+y+background.y);
+        Rect src = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
         c.drawBitmap(bitmap,selec,src,null);
     }
 
@@ -58,19 +56,24 @@ public class Ground {
     }
 
     public void collision() {
-        boxPlayer = background.x;
+        boxPlayer = a.background1.x;
         int inverseX = x - x * 2;
-        if (boxPlayer - a.sprite.getWidth() <= inverseX && boxPlayer >= inverseX-width) {
-            if (a.posY + a.sprite.getHeight()  >= y) {
+
+        if (boxPlayer - a.sprite.getWidth() < inverseX && boxPlayer >= inverseX-width) {
+            if (a.posY + a.sprite.getHeight()  > y && a.posY + a.sprite.getHeight() < y + bitmap.getHeight()) {
+                Log.v("TEST : ", "AVANT : "+inverseX+" APRES : "+ (boxPlayer - a.sprite.getWidth()));
                 a.sautControl = true;
-                a.posY = y - perso.getHeight();
+                a.posY = y - a.sprite.getHeight();
             }
         }
 
-        //Log.v("TEST : ", "AVANT : "+y+" APRES : "+(a.posY+a.sprite.getHeight()));
+        if (boxPlayer - a.sprite.getWidth() >= inverseX && boxPlayer <= inverseX-width) {
+            if (a.posY + a.sprite.getHeight()  < y && a.posY + a.sprite.getHeight() > y + bitmap.getHeight()) {
+                a.lockPos = false;
+            }
+        }
 
-
-        if (a.posY + a.sprite.getHeight() > y) {
+        if (a.posY + a.sprite.getHeight() >= y) {
             //Log.v("TEST : ", "AVANT : "+y+" APRES : "+(a.posY+a.sprite.getHeight()));
                 a.lockPos = true;
         }

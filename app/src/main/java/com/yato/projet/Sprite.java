@@ -25,7 +25,7 @@ public class Sprite {
         a = activity;
         bitmap = Bitmap.createScaledBitmap(player,player.getWidth(),player.getHeight(),false);
         x = 0;
-        y = 0;
+        y =  0;
 
         //-----------------------Frame--------------------------//
         width = (bitmap.getWidth() / 5); // On divise le spritesheet par le nombre de colones
@@ -60,7 +60,7 @@ public class Sprite {
     }
 
     public void onDraw(Canvas c, String option) {
-        Log.v("Test : ", " Height : "+bitmap.getHeight()+" width : "+bitmap.getWidth());
+        //Log.v("Test : ", " Height : "+bitmap.getHeight()+" width : "+bitmap.getWidth());
         frameX = width  * currentFrame;
         frameY = height  * direcrion;
         if (option == "droite") {
@@ -77,7 +77,7 @@ public class Sprite {
         if (option == "staticgauche") {
             direcrion = 1;
         }
-        if (currentFrame >= 4) {
+        if (currentFrame >= 5) {
             currentFrame = 0;
         }
 
