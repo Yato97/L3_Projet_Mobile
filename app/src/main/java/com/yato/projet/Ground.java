@@ -1,5 +1,6 @@
 package com.yato.projet;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,8 +22,7 @@ public class Ground {
     int boxPlayer;
     MediaPlayer hit;
     float aspectRatio;
-
-
+    Rect groundBox,playerBox,selec;
     //[x,y]
     public Ground(Activity3 activity, Bitmap ground, int x,int y) {
         this.x = x;
@@ -36,14 +36,30 @@ public class Ground {
         width = bitmap.getWidth(); // On divise le spritesheet par le nombre de colones
         //-----------------------Frame--------------------------//
         bitmap = Bitmap.createScaledBitmap(ground,width,height,false);
+        groundBox = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
         paint = new Paint();
     }
 
+    @SuppressLint("DrawAllocation")
     public void onDraw(Canvas c) {
         collision();
-        Rect selec = new Rect(0,0,width,height);
-        Rect src = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
-        c.drawBitmap(bitmap,selec,src,null);
+        selec = new Rect(0,0,width,height);
+        c.drawBitmap(bitmap,selec,groundBox,null);
+    }
+
+
+    public  boolean collision() {
+        playerBox = a.sprite.getDst();
+        groundBox.set(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
+        if (playerBox.right / 2 > groundBox.left && playerBox.right / 2 <= groundBox.right) {
+            if (a.posY + a.sprite.getHeight()  >= groundBox.top &&  playerBox.top < groundBox.top) {
+                Log.v("GROUND : ", "" + groundBox);
+                a.posY = groundBox.top - a.sprite.getHeight();
+                a.sautControl = true;
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -53,30 +69,5 @@ public class Ground {
 
     public int getY() {
         return y;
-    }
-
-    public void collision() {
-        boxPlayer = a.background1.x;
-        int inverseX = x - x * 2;
-
-        if (boxPlayer - a.sprite.getWidth() < inverseX && boxPlayer >= inverseX-width) {
-            if (a.posY + a.sprite.getHeight()  > y && a.posY + a.sprite.getHeight() < y + bitmap.getHeight()) {
-                Log.v("TEST : ", "AVANT : "+inverseX+" APRES : "+ (boxPlayer - a.sprite.getWidth()));
-                a.sautControl = true;
-                a.posY = y - a.sprite.getHeight();
-            }
-        }
-
-        if (boxPlayer - a.sprite.getWidth() >= inverseX && boxPlayer <= inverseX-width) {
-            if (a.posY + a.sprite.getHeight()  < y && a.posY + a.sprite.getHeight() > y + bitmap.getHeight()) {
-                a.lockPos = false;
-            }
-        }
-
-        if (a.posY + a.sprite.getHeight() >= y) {
-            //Log.v("TEST : ", "AVANT : "+y+" APRES : "+(a.posY+a.sprite.getHeight()));
-                a.lockPos = true;
-        }
-        a.lockPos = false;
     }
 }

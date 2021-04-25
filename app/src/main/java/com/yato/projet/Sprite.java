@@ -15,9 +15,14 @@ public class Sprite {
     int width, height, widthB, heightB;
     int frameX, frameY;
     int currentFrame, direcrion;
+    Rect dst;
     Bitmap bitmap;
     Activity3 a;
     Paint paint;
+
+    public Rect getDst() {
+        return dst;
+    }
 
     //[x,y]
     public Sprite(Activity3 activity, Bitmap player) {
@@ -82,7 +87,7 @@ public class Sprite {
         }
 
         Rect src = new Rect(frameX,frameY, width+frameX, height + frameY);
-        Rect dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX/26 ,height+y);
+        dst = new Rect(x-frameX/26 ,y ,(width+x)-frameX/26 ,height+y);
 
         c.drawBitmap(bitmap,src,dst,null);
     }

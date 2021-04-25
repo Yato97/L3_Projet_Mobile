@@ -329,13 +329,13 @@ import java.util.List;
             touchControl2 = true; //Etat de saut
         }
         if (!touchControl2) { // On descend "gravité"
-            posY += 10;
+            posY += 50;
         }
-        if (touchControl2 && posY + sprite.getHeight() >  sautRefGround.height) { //On monte jusqu'a la limite du saut
+        if (touchControl2 && sprite.getDst().bottom >  sautRefGround.height) { //On monte jusqu'a la limite du saut
             posY -= 50;
             sautControl = false;
         }
-        else { //Quand on atteint la limite du saut on redescend sans prendre en compte les deplacement latéral
+        else { //Quand on atteint la limite du saut on redescend
             touchControl2 = false;
         }
         //------------------------AXE Y--------------------------//
