@@ -173,7 +173,7 @@ import java.util.List;
                 posX = background1.x;
                 int boxPlayer = background1.x - (sprite.getWidth() * 2);
                 int inverseX = posX - posX * 2;
-                score.setText("pos Y : "+ (posY+sprite.getHeight()) + " ground : " + (ground.getY()));
+                score.setText(""+compteur);
                 if (posY >= screenHeight - sprite.getHeight() || sautControl) { //Exeption : on attent d'étre au sol pour pouvoir resauté
                     buttona.setEnabled(true);
                 }
