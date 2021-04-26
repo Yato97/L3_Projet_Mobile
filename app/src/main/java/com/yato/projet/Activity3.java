@@ -219,7 +219,7 @@ import java.util.List;
 
     public void sleep() {
         try {
-            Thread.sleep(17);
+            Thread.sleep(45);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

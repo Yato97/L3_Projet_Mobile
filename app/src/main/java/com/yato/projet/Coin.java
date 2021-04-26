@@ -20,7 +20,7 @@ public class Coin {
     Sprite perso;
     Paint paint;
     Background background;
-    int boxPlayer;
+    Rect playerBox, coinBox;
     MediaPlayer hit;
 
 
@@ -42,7 +42,7 @@ public class Coin {
         //-----------------------Frame--------------------------//
 
         currentFrame = 0; // La position du sprite voulu sur une ligne
-
+        coinBox = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
         paint = new Paint();
     }
 
@@ -53,12 +53,13 @@ public class Coin {
             currentFrame = 0;
         }
         update();
+        collision();
         //Rect src = new Rect(frameX,height, width+frameX, height);
         //Rect dst = new Rect(x ,y ,(width+x)  ,height+y);
         Rect selec = new Rect(frameX,0,width+frameX,height);
-        Rect src = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
 
-        c.drawBitmap(bitmap,selec,src,null);
+
+        c.drawBitmap(bitmap,selec,coinBox,null);
 
         if (collision()) {
             a.compteur++;
@@ -80,10 +81,10 @@ public class Coin {
     }
 
     public boolean collision() {
-        boxPlayer = a.background1.x - (width * 2);
-        int inverseX = x - x*2;
-        if (boxPlayer <= inverseX && a.background1.x >= inverseX-width) {
-            if (a.posY + a.sprite.getHeight() >= y && a.posY <= y+height) {
+        coinBox.set(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);;
+        playerBox = a.sprite.getDst();
+        if (playerBox.right >= coinBox.left && playerBox.left  <= coinBox.right) {
+            if (playerBox.bottom  >= coinBox.top &&  playerBox.top <= coinBox.top) {
                 hit.start(); //La musique du coin
                 return true;
             }

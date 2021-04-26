@@ -30,12 +30,13 @@ public class Ground {
         a = activity;
         bitmap = ground;
 
-        aspectRatio = a.ratioScale;
+        aspectRatio = bitmap.getWidth() / (float)bitmap.getHeight();
+
         //-----------------------Frame--------------------------//
-        height = Math.round(ground.getHeight() + aspectRatio); // On divise le spritesheet par le nombre de lignes
-        width = Math.round(ground.getWidth() + aspectRatio); // On divise le spritesheet par le nombre de colones
+        height = Math.round(ground.getHeight() / ground.getHeight()  a.point.y * aspectRatio);
+        width = (Math.round(height * aspectRatio));
         //-----------------------Frame--------------------------//
-        bitmap = Bitmap.createScaledBitmap(ground,width,height,false);
+        bitmap = Bitmap.createScaledBitmap(bitmap,width,height,false);
         groundBox = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
         paint = new Paint();
     }

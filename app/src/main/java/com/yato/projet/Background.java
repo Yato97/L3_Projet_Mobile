@@ -33,6 +33,7 @@ public class Background {
         height = screenY;
         width = Math.round(height * aspectRatio);
         Log.v("SCALR :",""+aspectRatio);
+        Log.v("SCREENY :",""+screenY);
         Log.v("SCALRWIDTH :",""+width);
         Log.v("SCALRHEIGHT :",""+height);
 
