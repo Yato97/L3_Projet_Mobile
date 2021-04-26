@@ -23,18 +23,36 @@ public class Ground {
     MediaPlayer hit;
     float aspectRatio;
     Rect groundBox,playerBox,selec;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     //[x,y]
     public Ground(Activity3 activity, Bitmap ground, int x,int y) {
         this.x = x;
         this.y = y;
+
         a = activity;
         bitmap = ground;
 
         aspectRatio = bitmap.getWidth() / (float)bitmap.getHeight();
 
         //-----------------------Frame--------------------------//
-        height = Math.round(ground.getHeight() / ground.getHeight()  a.point.y * aspectRatio);
-        width = (Math.round(height * aspectRatio));
+        height = (bitmap.getHeight() * a.background1.getHeight()) / a.background1.originalHeight;
+        width = (bitmap.getWidth() *  a.background1.getWidth()) / a.background1.originaWidth;
         //-----------------------Frame--------------------------//
         bitmap = Bitmap.createScaledBitmap(bitmap,width,height,false);
         groundBox = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);

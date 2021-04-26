@@ -9,8 +9,8 @@ import android.util.Log;
 public class Background {
     int x = 0,y;
     Bitmap background;
-    int width;
-    int height;
+    int width, originaWidth;
+    int height, originalHeight;
     float aspectRatio;
 
     public int getWidth() {
@@ -25,17 +25,33 @@ public class Background {
         return aspectRatio;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getOriginaWidth() {
+        return originaWidth;
+    }
+
+    public int getOriginalHeight() {
+        return originalHeight;
+    }
+
     Background(int screenX, int screenY, Resources res) {
         background = BitmapFactory.decodeResource(res, R.drawable.intro2);
+        originaWidth = background.getWidth();
+        originalHeight = background.getHeight();
 
         aspectRatio = background.getWidth() / (float)background.getHeight();
 
         height = screenY;
         width = Math.round(height * aspectRatio);
-        Log.v("SCALR :",""+aspectRatio);
-        Log.v("SCREENY :",""+screenY);
-        Log.v("SCALRWIDTH :",""+width);
-        Log.v("SCALRHEIGHT :",""+height);
+
+        Log.v("TEST : ",""+originalHeight);
+        Log.v("TEST : ",""+width);
+        Log.v("TEST : ",""+originalHeight);
+        Log.v("TEST : ",""+height);
+
 
         background = Bitmap.createScaledBitmap(background, width , height, false);
      }
