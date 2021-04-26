@@ -79,6 +79,9 @@ import java.util.List;
     private FrameLayout frameLayout;
     int posX; //Positions
     int posY;
+    float ratioScale;
+
+    Point point;
 
     int screenWidth; //Dimentions ecran
     int screenHeight;
@@ -95,7 +98,7 @@ import java.util.List;
         surface = findViewById(R.id.surfaceV);
         player = BitmapFactory.decodeResource(getResources(), R.drawable.playersheet);
         coinsheet = BitmapFactory.decodeResource(getResources(), R.drawable.coin);
-        sol = BitmapFactory.decodeResource(getResources(), R.drawable.boxtest);
+        sol = BitmapFactory.decodeResource(getResources(), R.drawable.texture);
         solHauteur = BitmapFactory.decodeResource(getResources(), R.drawable.texture2);
         sautRef = BitmapFactory.decodeResource(getResources(), R.drawable.sautref);
         scaleX = 1980f;
@@ -119,14 +122,15 @@ import java.util.List;
         //-----------------------Musique--------------------------//
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Retire la bordure haut
-        Point point = new Point();
+        point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
         background1 = new Background(point.x, point.y, getResources());
+        ratioScale = background1.getAspectRatio();
         sprite = new Sprite(this, player);
-        ground = new Ground(this,sol,0,background1.getHeight() - sol.getHeight());
-        ground2 = new Ground(this, solHauteur, sol.getWidth() * 2 ,background1.getHeight() - sol.getHeight() * 3);
-        sautRefGround = new Ground(this, sautRef, sol.getWidth() + 16 ,  background1.getHeight() - sautRef.getHeight());
+        ground = new Ground(this,sol,0,point.y - sol.getHeight());
+        ground2 = new Ground(this, solHauteur, sol.getWidth() ,point.y - sol.getHeight() * 3);
+        //sautRefGround = new Ground(this, sautRef, sol.getWidth() + 16 ,  background1.getHeight() - sautRef.getHeight());
         coin2 = new Coin(this,coinsheet,400,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
         coin3 = new Coin(this,coinsheet,600,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
         coin4 = new Coin(this,coinsheet,800,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
@@ -138,16 +142,13 @@ import java.util.List;
         option = "static";
         //-----------------------Playerpos----------------------//
 
-        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE); am.setStreamVolume(AudioManager.STREAM_MUSIC,am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
-
         paint = new Paint();
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
         song.setLooping(true);
         song.start(); //La musique principale du jeu
-
-
+        song.setVolume(0.5f,0.5f);
 
         //-----------------------HOMELISTENER-----------------------//
         //----------------------------------------------------------//
@@ -209,8 +210,8 @@ import java.util.List;
             coin4.onDraw(canvas);
 
             ground.onDraw(canvas);
-            ground2.onDraw(canvas);
-            sautRefGround.onDraw(canvas);
+            //ground2.onDraw(canvas);
+            //sautRefGround.onDraw(canvas);
 
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
@@ -331,7 +332,7 @@ import java.util.List;
         if (!touchControl2) { // On descend "gravité"
             posY += 50;
         }
-        if (touchControl2 && sprite.getDst().bottom >  sautRefGround.height) { //On monte jusqu'a la limite du saut
+        if (touchControl2 && sprite.getDst().bottom >= 0) { //On monte jusqu'a la limite du saut
             posY -= 50;
             sautControl = false;
         }

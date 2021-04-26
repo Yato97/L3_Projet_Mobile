@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 
 public class Background {
     int x = 0,y;
@@ -20,12 +21,20 @@ public class Background {
         return height;
     }
 
+    public float getAspectRatio() {
+        return aspectRatio;
+    }
+
     Background(int screenX, int screenY, Resources res) {
-        background = BitmapFactory.decodeResource(res, R.drawable.intro);
+        background = BitmapFactory.decodeResource(res, R.drawable.intro2);
 
         aspectRatio = background.getWidth() / (float)background.getHeight();
+
         height = screenY;
         width = Math.round(height * aspectRatio);
+        Log.v("SCALR :",""+aspectRatio);
+        Log.v("SCALRWIDTH :",""+width);
+        Log.v("SCALRHEIGHT :",""+height);
 
         background = Bitmap.createScaledBitmap(background, width , height, false);
      }

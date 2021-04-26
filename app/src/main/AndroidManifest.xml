@@ -12,7 +12,9 @@
         <activity android:name=".Game"
             android:screenOrientation="fullSensor">
         </activity>
-        <activity android:name=".Activity3" ></activity>
+        <activity android:name=".Activity3"
+            android:screenOrientation="landscape">
+        </activity>
         <activity android:name=".Activity0" ></activity>
         <activity android:name=".Activity1" ></activity>
         <activity

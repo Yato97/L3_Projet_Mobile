@@ -28,12 +28,12 @@ public class Ground {
         this.x = x;
         this.y = y;
         a = activity;
-        aspectRatio = a.sol.getWidth() / (float)a.sol.getHeight();
-
         bitmap = ground;
+
+        aspectRatio = a.ratioScale;
         //-----------------------Frame--------------------------//
-        height = bitmap.getHeight(); // On divise le spritesheet par le nombre de lignes
-        width = bitmap.getWidth(); // On divise le spritesheet par le nombre de colones
+        height = Math.round(ground.getHeight() + aspectRatio); // On divise le spritesheet par le nombre de lignes
+        width = Math.round(ground.getWidth() + aspectRatio); // On divise le spritesheet par le nombre de colones
         //-----------------------Frame--------------------------//
         bitmap = Bitmap.createScaledBitmap(ground,width,height,false);
         groundBox = new Rect(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
@@ -48,18 +48,15 @@ public class Ground {
     }
 
 
-    public  boolean collision() {
+    public void collision() {
         playerBox = a.sprite.getDst();
         groundBox.set(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
         if (playerBox.right / 2 > groundBox.left && playerBox.right / 2 <= groundBox.right) {
             if (a.posY + a.sprite.getHeight()  >= groundBox.top &&  playerBox.top < groundBox.top) {
-                Log.v("GROUND : ", "" + groundBox);
                 a.posY = groundBox.top - a.sprite.getHeight();
                 a.sautControl = true;
-                return true;
             }
         }
-        return false;
     }
 
 

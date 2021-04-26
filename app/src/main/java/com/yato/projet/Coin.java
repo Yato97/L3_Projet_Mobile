@@ -53,7 +53,6 @@ public class Coin {
             currentFrame = 0;
         }
         update();
-        collision();
         //Rect src = new Rect(frameX,height, width+frameX, height);
         //Rect dst = new Rect(x ,y ,(width+x)  ,height+y);
         Rect selec = new Rect(frameX,0,width+frameX,height);
@@ -63,13 +62,13 @@ public class Coin {
 
         if (collision()) {
             a.compteur++;
-            x = 1;
-            y = 1;
+            x = 0;
+            y = 0;
         }
     }
 
     public void update() {
-        currentFrame += 1;
+        currentFrame ++;
     }
 
     public int getX() {
