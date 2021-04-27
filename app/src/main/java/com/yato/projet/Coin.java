@@ -60,6 +60,7 @@ public class Coin {
 
 
         c.drawBitmap(bitmap,selec,coinBox,null);
+        c.drawRect(playerBox,paint);
 
         if (collision()) {
             a.compteur++;

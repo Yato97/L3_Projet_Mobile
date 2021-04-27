@@ -56,7 +56,7 @@ import java.util.List;
     Bitmap sol, solHauteur, sautRef;
     Sprite sprite;
     Coin coin, coin2, coin3, coin4;
-    Ground ground, ground2, sautRefGround, sautRef22, pillar3, goldislant, landnextgold, longend,endF, littlebox, multplate, multplate2,multhaut, littlebox2, littlebox3;
+    Ground ground, ground2, sautRefGround, sautRef22, pillar3, goldislant, landnextgold, longend,endF, littlebox, multplate, multplate2,multhaut, littlebox2, littlebox3, endscale, multplateScale, duoScale;
     //-----------------------Layout--------------------------//
 
     //-----------------------Musique-------------------------//
@@ -138,30 +138,29 @@ import java.util.List;
         getWindowManager().getDefaultDisplay().getSize(point);
 
         background1 = new Background(point.x, point.y, getResources());
-        ratioScale = background1.getAspectRatio();
         sprite = new Sprite(this, player);
         ground = new Ground(this,sol,0,point.y * 59 / 64);
-        ground2 = new Ground(this, solHauteur, (int) (ground.getWidth()), (int) ((double)point.y * 48.5/64));
-        Ground duoScale = new Ground(this, sautRef,(int) (ground.getWidth()), (int) ((double)point.y ));
-        sautRefGround = new Ground(this, sautRef, (int) (ground2.getX() + ground2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 48.5/64));
-        sautRef22 = new Ground(this, sautRef2, (int) (sautRefGround.getX() + sautRefGround.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 43.64/64));
-        pillar3 = new Ground(this, sautRef3, (int) (sautRef22.getX() + sautRef22.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.54/64));
-        goldislant = new Ground(this, goldIsland, (int) (pillar3.getX() + pillar3.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.54/64));
-        landnextgold = new Ground(this, landNextGold, (int) (goldislant.getX() + goldislant.getWidth() - duoScale.getWidth()/2),  (int) ((double)point.y * 59 / 64));
-        multhaut = new Ground(this, multHaut, (int) (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y * 43.64/64));
-        Ground multplateScale = new Ground(this, multPlate, (int) (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y));
-        multplate = new Ground(this, multPlate, (int) (landnextgold.getX() + landnextgold.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
-        multplate2 = new Ground(this, lastLong, (int) (multplate.getX() + multplate.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
-        Ground endscale = new Ground(this,endScale,0,point.y);
-        endF = new Ground(this, end, (int) (multplate2.getX() + multplate2.getWidth() + endscale.getWidth()),  (int) ((double)point.y * 59 / 64));
-        littlebox = new Ground(this, boxaera, (int) (endF.getX() + duoScale.getWidth()),  (int) ((double)point.y * 43.64 / 64));
-        littlebox2 = new Ground(this, boxaera, (int) (littlebox.getX()+ littlebox.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.52 / 64));
-        littlebox3 = new Ground(this, boxaera, (int) (littlebox2.getX() + littlebox2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 33.20 / 64));
+        ground2 = new Ground(this, solHauteur, (ground.getWidth()), (int) ((double)point.y * 48.5/64));
+        duoScale = new Ground(this, sautRef,0, (int) ((double)point.y ));
+        sautRefGround = new Ground(this, sautRef,  (ground2.getX() + ground2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 48.5/64));
+        sautRef22 = new Ground(this, sautRef2,  (sautRefGround.getX() + sautRefGround.getWidth() + sautRefGround.getWidth()),  (int) ((double)point.y * 43.64/64));
+        pillar3 = new Ground(this, sautRef3,  (sautRef22.getX() + sautRefGround.getWidth() + duoScale.getWidth() + duoScale.getWidth() / 16),  (int) ((double)point.y * 38.54/64));
+        goldislant = new Ground(this, goldIsland,  (pillar3.getX() + pillar3.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.54/64));
+        landnextgold = new Ground(this, landNextGold,  (goldislant.getX() + goldislant.getWidth() - pillar3.getWidth()/2),  (int) ((double)point.y * 59 / 64));
+        multhaut = new Ground(this, multHaut,  (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y * 43.64/64));
+        multplateScale = new Ground(this, multPlate,  (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y));
+        multplate = new Ground(this, multPlate,  (landnextgold.getX() + landnextgold.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
+        multplate2 = new Ground(this, lastLong,  (multplate.getX() + multplate.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
+        endscale = new Ground(this,endScale,0,point.y);
+        endF = new Ground(this, end,  (multplate2.getX() + multplate2.getWidth() + endscale.getWidth() + endScale.getWidth() / 64),  (int) ((double)point.y * 59 / 64));
+        littlebox = new Ground(this, boxaera,  (endF.getX() + duoScale.getWidth()),  (int) ((double)point.y * 43.64 / 64));
+        littlebox2 = new Ground(this, boxaera,  (littlebox.getX()+ littlebox.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.52 / 64));
+        littlebox3 = new Ground(this, boxaera,  (littlebox2.getX() + littlebox2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 33.20 / 64));
 
 
-        coin2 = new Coin(this,coinsheet,400,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
-        coin3 = new Coin(this,coinsheet,600,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
-        coin4 = new Coin(this,coinsheet,800,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
+        coin2 = new Coin(this,coinsheet,((ground2.getX() + ground2.getWidth()/2)),ground2.getY() - coinsheet.getHeight() - ground.getHeight());
+        coin3 = new Coin(this,coinsheet,((sautRef22.getX() + sautRef22.getWidth()/2) - coin2.width / 2),sautRef22.getY() - coinsheet.getHeight() - ground.getHeight());
+        coin4 = new Coin(this,coinsheet,(multplate.getX() + multplate.getWidth()/2) - coin2.width / 2,multplate.getY() - coinsheet.getHeight() - ground.getHeight());
         coin = new Coin(this,coinsheet, 200, background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
 
         //-----------------------Playerpos----------------------//
@@ -232,10 +231,6 @@ import java.util.List;
             canvas.drawBitmap(background1.background,background1.x, background1.y, paint);
 
             sprite.onDraw(canvas, option);
-            coin.onDraw(canvas);
-            coin2.onDraw(canvas);
-            coin3.onDraw(canvas);
-            coin4.onDraw(canvas);
 
             ground.onDraw(canvas);
             ground2.onDraw(canvas);
@@ -251,6 +246,11 @@ import java.util.List;
             littlebox.onDraw(canvas);
             littlebox2.onDraw(canvas);
             littlebox3.onDraw(canvas);
+
+            coin.onDraw(canvas);
+            coin2.onDraw(canvas);
+            coin3.onDraw(canvas);
+            coin4.onDraw(canvas);
             surface.getHolder().unlockCanvasAndPost(canvas);
         }
     }
@@ -368,10 +368,10 @@ import java.util.List;
             touchControl2 = true; //Etat de saut
         }
         if (!touchControl2) { // On descend "gravité"
-            posY += 100;
+            posY += 50;
         }
         if (touchControl2 && sprite.getDst().bottom >= 0) { //On monte jusqu'a la limite du saut
-            posY -= 100;
+            posY -= 50;
             sautControl = false;
         }
         else { //Quand on atteint la limite du saut on redescend
