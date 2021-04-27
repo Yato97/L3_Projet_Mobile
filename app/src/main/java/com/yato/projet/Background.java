@@ -47,12 +47,6 @@ public class Background {
         height = screenY;
         width = Math.round(height * aspectRatio);
 
-        Log.v("TEST : ",""+originalHeight);
-        Log.v("TEST : ",""+width);
-        Log.v("TEST : ",""+originalHeight);
-        Log.v("TEST : ",""+height);
-
-
         background = Bitmap.createScaledBitmap(background, width , height, false);
      }
 }
