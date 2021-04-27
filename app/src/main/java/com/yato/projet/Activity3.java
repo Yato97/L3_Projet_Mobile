@@ -161,7 +161,7 @@ import java.util.List;
         coin2 = new Coin(this,coinsheet,((ground2.getX() + ground2.getWidth()/2)),ground2.getY() - coinsheet.getHeight() - ground.getHeight());
         coin3 = new Coin(this,coinsheet,((sautRef22.getX() + sautRef22.getWidth()/2) - coin2.width / 2),sautRef22.getY() - coinsheet.getHeight() - ground.getHeight());
         coin4 = new Coin(this,coinsheet,(multplate.getX() + multplate.getWidth()/2) - coin2.width / 2,multplate.getY() - coinsheet.getHeight() - ground.getHeight());
-        coin = new Coin(this,coinsheet, 200, background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
+        coin = new Coin(this,coinsheet, landnextgold.getX() + landnextgold.getWidth() * 3/4, ground.getY() - coinsheet.getHeight() - ground.getHeight());
 
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
