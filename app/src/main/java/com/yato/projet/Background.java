@@ -38,7 +38,7 @@ public class Background {
     }
 
     Background(int screenX, int screenY, Resources res) {
-        background = BitmapFactory.decodeResource(res, R.drawable.intro2);
+        background = BitmapFactory.decodeResource(res, R.drawable.mapfinal);
         originaWidth = background.getWidth();
         originalHeight = background.getHeight();
 

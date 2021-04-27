@@ -110,6 +110,7 @@ import java.util.List;
         Bitmap lastLong = BitmapFactory.decodeResource(getResources(), R.drawable.lastlong);
         Bitmap end = BitmapFactory.decodeResource(getResources(), R.drawable.end);
         Bitmap boxaera = BitmapFactory.decodeResource(getResources(), R.drawable.littlebox);
+        Bitmap endScale = BitmapFactory.decodeResource(getResources(), R.drawable.endscale);
 
 
         scaleX = 1980f;
@@ -140,19 +141,22 @@ import java.util.List;
         ratioScale = background1.getAspectRatio();
         sprite = new Sprite(this, player);
         ground = new Ground(this,sol,0,point.y * 59 / 64);
-        ground2 = new Ground(this, solHauteur, (int) (ground.getWidth() + point.x * 0.02443), (int) ((double)point.y * 48.5/64));
-        sautRefGround = new Ground(this, sautRef, (int) (ground2.getX() + ground2.getWidth() + point.x * 0.02443 * 2),  (int) ((double)point.y * 48.5/64));
-        sautRef22 = new Ground(this, sautRef2, (int) (sautRefGround.getX() + sautRefGround.getWidth() + point.x * 0.02443 * 2),  (int) ((double)point.y * 43.64/64));
-        pillar3 = new Ground(this, sautRef3, (int) (sautRef22.getX() + sautRef22.getWidth() + point.x * 0.02443 * 2),  (int) ((double)point.y * 38.54/64));
-        goldislant = new Ground(this, goldIsland, (int) (pillar3.getX() + pillar3.getWidth() + point.x * 0.02443 * 4),  (int) ((double)point.y * 38.54/64));
-        landnextgold = new Ground(this, landNextGold, (int) (goldislant.getX() + goldislant.getWidth() - point.x * 0.02443),  (int) ((double)point.y * 59 / 64));
-        multhaut = new Ground(this, multHaut, (int) (landnextgold.getX() + landnextgold.getWidth() - point.x * 0.02443 * 6),  (int) ((double)point.y * 43.64/64));
-        multplate = new Ground(this, multPlate, (int) (landnextgold.getX() + landnextgold.getWidth() + point.x * 0.02443 * 7),  (int) ((double)point.y * 59 / 64));
-        multplate2 = new Ground(this, lastLong, (int) (multplate.getX() + multplate.getWidth() + point.x * 0.02443 * 7),  (int) ((double)point.y * 59 / 64));
-        endF = new Ground(this, end, (int) (multplate2.getX() + multplate2.getWidth() + point.x * 0.0243 * 14),  (int) ((double)point.y * 59 / 64));
-        littlebox = new Ground(this, boxaera, (int) (endF.getX() + point.x * 0.02443 * 10),  (int) ((double)point.y * 48.5 / 64));
-        littlebox2 = new Ground(this, boxaera, (int) (littlebox.getX()+ littlebox.getWidth() + point.x * 0.02443 * 2),  (int) ((double)point.y * 43.64 / 64));
-        littlebox3 = new Ground(this, boxaera, (int) (littlebox2.getX() + littlebox2.getWidth() + point.x * 0.02443 * 2),  (int) ((double)point.y * 38.64 / 64));
+        ground2 = new Ground(this, solHauteur, (int) (ground.getWidth()), (int) ((double)point.y * 48.5/64));
+        Ground duoScale = new Ground(this, sautRef,(int) (ground.getWidth()), (int) ((double)point.y ));
+        sautRefGround = new Ground(this, sautRef, (int) (ground2.getX() + ground2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 48.5/64));
+        sautRef22 = new Ground(this, sautRef2, (int) (sautRefGround.getX() + sautRefGround.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 43.64/64));
+        pillar3 = new Ground(this, sautRef3, (int) (sautRef22.getX() + sautRef22.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.54/64));
+        goldislant = new Ground(this, goldIsland, (int) (pillar3.getX() + pillar3.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.54/64));
+        landnextgold = new Ground(this, landNextGold, (int) (goldislant.getX() + goldislant.getWidth() - duoScale.getWidth()/2),  (int) ((double)point.y * 59 / 64));
+        multhaut = new Ground(this, multHaut, (int) (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y * 43.64/64));
+        Ground multplateScale = new Ground(this, multPlate, (int) (landnextgold.getX() + landnextgold.getWidth()),  (int) ((double)point.y));
+        multplate = new Ground(this, multPlate, (int) (landnextgold.getX() + landnextgold.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
+        multplate2 = new Ground(this, lastLong, (int) (multplate.getX() + multplate.getWidth() + multplateScale.getWidth()),  (int) ((double)point.y * 59 / 64));
+        Ground endscale = new Ground(this,endScale,0,point.y);
+        endF = new Ground(this, end, (int) (multplate2.getX() + multplate2.getWidth() + endscale.getWidth()),  (int) ((double)point.y * 59 / 64));
+        littlebox = new Ground(this, boxaera, (int) (endF.getX() + duoScale.getWidth()),  (int) ((double)point.y * 43.64 / 64));
+        littlebox2 = new Ground(this, boxaera, (int) (littlebox.getX()+ littlebox.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 38.52 / 64));
+        littlebox3 = new Ground(this, boxaera, (int) (littlebox2.getX() + littlebox2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 33.20 / 64));
 
 
         coin2 = new Coin(this,coinsheet,400,background1.getHeight() - coinsheet.getHeight() - sol.getHeight() * 2);
