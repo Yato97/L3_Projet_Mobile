@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="Vous avez gagner"
+                android:text="Vous avez gagné"
                 android:textSize="40dp"
                 android:textColor="@color/tomato"
                 android:gravity="center_horizontal" />
