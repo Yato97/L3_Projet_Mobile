@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     //-----------------------Variables--------------------------//
-    private Bird ocean = new Bird("Chuck",3, "chuck", "Ocean", 0);
-    private Bird ville = new Bird("Will",3, "will", "Ville", 0);
-    private Bird montagne = new Bird("Nuck",3, "nuck", "Montagne", 0);
-    private Bird hiver = new Bird("Fox",3, "fox", "Hiver", 0);
+    private Bird ocean = new Bird("Chuck",3, "chuck", "Carte : God Valley", 0);
+    private Bird ville = new Bird("Will",3, "will", "Carte : Little Garden", 0);
+    private Bird montagne = new Bird("Nuck",3, "nuck", "Carte : Skypedia", 0);
+    private Bird hiver = new Bird("Fox",3, "fox", "Carte : Laugh Tale", 0);
     //-----------------------Variables--------------------------//
 
 
@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         birdList.add(hiver);
         //-----------------------Bird List--------------------------//
 
-
         //-----------------------Layout--------------------------//
         listView = findViewById(R.id.list);
         listView.setAdapter(new birdAdapter(this, birdList));
@@ -66,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
         //-----------------------ITEMLISTENER-----------------------//
         //----------------------------------------------------------//
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (position == 0) {
+            if (position == 1) {
                 Intent activity0 = new Intent(MainActivity.this, Activity0.class);
                 activity0.putExtra("meilleurescore",ocean.getMeilleurescore());
                 startActivityForResult(activity0, ACTIVITY0);
 
             }
-            if (position == 1) {
+            if (position == 3) {
                 Intent activity1 = new Intent(MainActivity.this, Activity1.class);
                 activity1.putExtra("meilleurescore",ville.getMeilleurescore());
                 startActivityForResult(activity1, ACTIVITY1);
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 activity2.putExtra("meilleurescore",montagne.getMeilleurescore());
                 startActivity(activity2);
             }
-            if (position == 3) {
+            if (position == 0) {
                 Intent activity3 = new Intent(MainActivity.this, Activity3.class);
                 activity3.putExtra("meilleurescore",hiver.getMeilleurescore());
                 startActivityForResult(activity3, ACTIVITY3);
@@ -97,16 +96,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACTIVITY0) {
+        int scoreIn = data.getExtras().getInt("score");
+        if (requestCode == ACTIVITY3 && ocean.getMeilleurescore() <= scoreIn) {
             ocean.setMeilleurescore(data.getExtras().getInt("score")); //On récupére le score
         }
-        if (requestCode == ACTIVITY1) {
+        if (requestCode == ACTIVITY0) {
             ville.setMeilleurescore(data.getExtras().getInt("score")); //On récupére le score
         }
         if (requestCode == ACTIVITY2) {
             montagne.setMeilleurescore(data.getExtras().getInt("score")); //On récupére le score
         }
-        if (requestCode == ACTIVITY3) {
+        if (requestCode == ACTIVITY1) {
             hiver.setMeilleurescore(data.getExtras().getInt("score")); //On récupére le score
         }
         listView.setAdapter(new birdAdapter(this, birdList)); //Update

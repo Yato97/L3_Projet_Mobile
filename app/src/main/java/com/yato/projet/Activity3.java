@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,13 +37,14 @@ import java.util.List;
 
     public class Activity3 extends Activity implements Runnable {
     //-----------------------SurfaceView----------------------//
+    Runnable context = this;
     private Thread thread;
     private boolean isPlaying;
     Background background1;
     private int screenX, screenY;
-    private float scaleX, scaleY;
     private Paint paint;
     private SurfaceView surface;
+    Dialog dialog_win, dialog_lose;
     //-----------------------SurfaceView----------------------//
 
     //-----------------------Layout--------------------------//
@@ -66,12 +68,12 @@ import java.util.List;
 
 
     //-------------------------Control------------------------//
-     boolean touchControl = false; //Etat de marche
-     boolean touchControl2 = false; //Etat de saut
-     boolean sautControl = false; //Etat de debut de jeu
-     boolean lockPos = false;
-    private String action;
-    private String option;
+        boolean touchControl = false; //Etat de marche
+        boolean touchControl2 = false; //Etat de saut
+        boolean sautControl = false;
+        boolean lockPos = false;
+        private String action;
+        private String option;
     //-------------------------Control------------------------//
 
 
@@ -79,7 +81,6 @@ import java.util.List;
     private FrameLayout frameLayout;
     int posX; //Positions
     int posY;
-    float ratioScale;
 
     Point point;
 
@@ -111,10 +112,6 @@ import java.util.List;
         Bitmap end = BitmapFactory.decodeResource(getResources(), R.drawable.end);
         Bitmap boxaera = BitmapFactory.decodeResource(getResources(), R.drawable.littlebox);
         Bitmap endScale = BitmapFactory.decodeResource(getResources(), R.drawable.endscale);
-
-
-        scaleX = 1980f;
-        scaleY = 1080f;
         //-----------------------SurfaceView----------------------//
 
         //-----------------------Layout--------------------------//
@@ -125,6 +122,9 @@ import java.util.List;
         buttona = findViewById(R.id.buttonA);
         buttonb = findViewById(R.id.buttonB);
         score = findViewById(R.id.score);
+
+        dialog_win =new Dialog(this);
+        dialog_lose =new Dialog(this);
         //-----------------------Layout--------------------------//
 
         //-----------------------Musique--------------------------//
@@ -138,8 +138,8 @@ import java.util.List;
         getWindowManager().getDefaultDisplay().getSize(point);
 
         background1 = new Background(point.x, point.y, getResources());
-        sprite = new Sprite(this, player);
         ground = new Ground(this,sol,0,point.y * 59 / 64);
+        sprite = new Sprite(this, player);
         ground2 = new Ground(this, solHauteur, (ground.getWidth()), (int) ((double)point.y * 48.5/64));
         duoScale = new Ground(this, sautRef,0, (int) ((double)point.y ));
         sautRefGround = new Ground(this, sautRef,  (ground2.getX() + ground2.getWidth() + duoScale.getWidth()),  (int) ((double)point.y * 48.5/64));
@@ -162,16 +162,16 @@ import java.util.List;
         coin3 = new Coin(this,coinsheet,((sautRef22.getX() + sautRef22.getWidth()/2) - coin2.width / 2),sautRef22.getY() - coinsheet.getHeight() - ground.getHeight());
         coin4 = new Coin(this,coinsheet,(multplate.getX() + multplate.getWidth()/2) - coin2.width / 2,multplate.getY() - coinsheet.getHeight() - ground.getHeight());
         coin = new Coin(this,coinsheet, landnextgold.getX() + landnextgold.getWidth() * 3/4, ground.getY() - coinsheet.getHeight() - ground.getHeight());
-
+        dialog_lose.setContentView(R.layout.defaite);
+        dialog_win.setContentView(R.layout.victoire);
         //-----------------------Playerpos----------------------//
         posX = sprite.getX();
         posY = sprite.getY();
         option = "static";
         //-----------------------Playerpos----------------------//
-
         paint = new Paint();
         isPlaying = true;
-        thread = new Thread(this);
+        thread = new Thread(context);
         thread.start();
         song.setLooping(true);
         song.start(); //La musique principale du jeu
@@ -180,9 +180,10 @@ import java.util.List;
         //-----------------------HOMELISTENER-----------------------//
         //----------------------------------------------------------//
         button.setOnClickListener(v -> {
+            song.stop();
             Intent intent = new Intent();
-            intent.putExtra("score", 100);
-            setResult(0, intent);
+            intent.putExtra("score", compteur);
+            setResult(3, intent);
             finish();
         });
         //-----------------------------------------------------------//
@@ -198,9 +199,8 @@ import java.util.List;
             sleep();
 
             runOnUiThread(() -> {
+                Log.v("POSX : ", ""+(background1.x)+"   LILMITE : "+ (-littlebox3.getX()));
                 posX = background1.x;
-                int boxPlayer = background1.x - (sprite.getWidth() * 2);
-                int inverseX = posX - posX * 2;
                 score.setText(""+compteur);
                 if (posY >= screenHeight - sprite.getHeight() || sautControl) { //Exeption : on attent d'étre au sol pour pouvoir resauté
                     buttona.setEnabled(true);
@@ -208,16 +208,20 @@ import java.util.List;
                 if (!sautControl) {
                     buttona.setEnabled(false);
                 }
-                if (lockPos) {
-                    score.setText("lol");
+                if (posY >= (screenHeight - sprite.getHeight())) { //BAS
+                    TextView scoreT = dialog_lose.findViewById(R.id.score);
+                    scoreT.setText(""+compteur);
+                    openLooseDialog();
+                }
+                if (background1.x  <= -(endF.getX())) {
+                    TextView scoreT = dialog_win.findViewById(R.id.score);
+                    scoreT.setText(""+compteur);
+                    openWinDialog();
                 }
             });
 
         }
     }
-
-
-
         public void update() {
         //Limites
         if (background1.x + background1.background.getWidth() <= 0) {
@@ -337,9 +341,6 @@ import java.util.List;
         if (posX <= 0) { //GAUCHE
             posX = 0;
         }
-        //if (posY >= (screenHeight - sprite.getHeight())) { //BAS
-        //    posY = (screenHeight - sprite.getHeight());
-        //}
         if (posX >= (screenWidth - sprite.getWidth())) { //DROITE
             posX = (screenWidth - sprite.getWidth());
         }
@@ -354,12 +355,13 @@ import java.util.List;
     // -----------------------DEPLACEMENTS-----------------------//
     //-----------------------------------------------------------//
     public void mouve(String action, boolean etat, boolean etat2) {
+        Rect spriteDst = sprite.getDst();
         //------------------------AXE X--------------------------//
         if (action == "AVANCE" && etat) {
-            background1.x -= (screenWidth / 30);
+            background1.x -= (screenWidth / 50);
         }
         if (action == "RECULE" && etat) {
-            background1.x += (screenWidth / 30);
+            background1.x += (screenWidth / 50);
         }
         //------------------------AXE X--------------------------//
 
@@ -368,19 +370,48 @@ import java.util.List;
             touchControl2 = true; //Etat de saut
         }
         if (!touchControl2) { // On descend "gravité"
-            posY += 50;
+            posY += screenHeight / 20;
         }
-        if (touchControl2 && sprite.getDst().bottom >= 0) { //On monte jusqu'a la limite du saut
-            posY -= 50;
-            sautControl = false;
-        }
-        else { //Quand on atteint la limite du saut on redescend
-            touchControl2 = false;
+        if (etat2) {
+            if (posY + sprite.getHeight() <= point.y && posY + sprite.getHeight() >= pillar3.getY() - ground.getHeight()) {//On monte jusqu'a la limite du saut
+                posY -= screenHeight / 20;
+                sautControl = false;
+            }
+            else { //Quand on atteint la limite du saut on redescend
+                touchControl2 = false;
+            }
         }
         //------------------------AXE Y--------------------------//
     }
     //-----------------------------------------------------------//
     // -----------------------DEPLACEMENTS-----------------------//
+    private void openWinDialog() {
+        pause();
+        Button quiter = dialog_win.findViewById(R.id.quiter);
+        quiter.setOnClickListener(v -> {
+            song.stop();
+            Intent intent = new Intent();
+            intent.putExtra("score", compteur);
+            setResult(3, intent);
+            finish();
+            dialog_win.dismiss();
+        });
+        dialog_win.show();
+    }
+
+    private void openLooseDialog() {
+        pause();
+        Button quiter2 = dialog_lose.findViewById(R.id.quiter);
+        quiter2.setOnClickListener(v -> {
+            song.stop();
+            Intent intent = new Intent();
+            intent.putExtra("score", compteur);
+            setResult(3, intent);
+            finish();
+            dialog_lose.dismiss();
+        });
+        dialog_lose.show();
+    }
 }
 
 

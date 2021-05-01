@@ -29,7 +29,7 @@ public class Sprite {
         sprite = this;
         a = activity;
         bitmap = Bitmap.createScaledBitmap(player,player.getWidth(),player.getHeight(),false);
-        x = 0;
+        x = a.ground.getWidth() / 2;
         y =  0;
 
         //-----------------------Frame--------------------------//

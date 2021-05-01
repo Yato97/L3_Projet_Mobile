@@ -15,7 +15,6 @@
         android:id="@+id/perso"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ally_chuck"
         />
 
     <RelativeLayout

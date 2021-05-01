@@ -114,7 +114,7 @@ public class Activity0 extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("score", 100);
+                intent.putExtra("score", 3);
                 setResult(0, intent);
                 finish();
             }

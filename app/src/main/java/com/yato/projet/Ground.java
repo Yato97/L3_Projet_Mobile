@@ -70,10 +70,10 @@ public class Ground {
     public void collision() {
         playerBox = a.sprite.getDst();
         groundBox.set(x+a.background1.x,y+a.background1.y, width+x+a.background1.x, height+y+a.background1.y);
-        if (playerBox.right / 2 > groundBox.left && playerBox.right / 2 <= groundBox.right) {
-            if (a.posY + a.sprite.getHeight()  >= groundBox.top &&  playerBox.top < groundBox.top) {
-                a.posY = groundBox.top - a.sprite.getHeight();
+        if (playerBox.right / 2 >= groundBox.left && playerBox.right / 2 <= groundBox.right) {
+            if (a.posY + a.sprite.getHeight()  >= groundBox.top &&  playerBox.top <= groundBox.top) {
                 a.sautControl = true;
+                a.posY = groundBox.top - a.sprite.getHeight();
             }
         }
     }
